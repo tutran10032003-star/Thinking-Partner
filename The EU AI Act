@@ -1,0 +1,29 @@
+---
+workflow: greenlight-landing-page
+risk_tier: minimal, one-off educational use with no personal data, automated decisions, or real-world effects on people
+owner: Student / assignment author
+last_audit: 2026-10-04
+---
+
+# Greenlight Ireland Fintech Landing Page
+
+## Risk classification
+This workflow is minimal risk because ChatGPT was used to generate HTML code for a conceptual educational prototype. No personal, customer, employee, or confidential data was processed, and the output does not make decisions affecting people's rights, money, health, jobs, or access to services.
+
+## Five-point hygiene check
+bias:         PASS - The workflow uses public strategic concepts and structural content, with no individual-level profiling or decision-making.
+
+privacy:      PASS - No personal, customer, employee, or confidential data was entered into the AI system.
+
+consent:      PASS - No third-party personal data was processed, and the assignment context permits AI assistance as described.
+
+attribution:  PASS - The module instructor and peers are aware that AI was used to assist in creating the assignment.
+
+transparency: PASS - The AI-assisted nature of the work is disclosed to the relevant academic audience.
+
+## Remediation (do these in order)
+1. Keep a brief record of the AI assistance used, including that ChatGPT generated or assisted with the HTML code, so the AI contribution can be explained if requested.
+2. Verify the generated code and substantive project claims yourself before submission, and make sure the final work complies with your module's academic integrity and AI-use requirements.
+
+## Note
+This is general education on the EU AI Act, not legal advice.
