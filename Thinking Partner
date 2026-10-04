@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A research-first strategy for building the next generation of financial independence tools for young people in Ireland." />
+  <title>Beyond the Card — Rethinking Kids' Fintech</title>
+
+  <style>
+    :root {
+      --bg: #07090d;
+      --bg-soft: #0c1017;
+      --surface: rgba(18, 23, 32, 0.82);
+      --surface-solid: #111722;
+      --surface-2: #161d29;
+      --text: #f4f7fb;
+      --muted: #9aa6b7;
+      --muted-2: #6f7b8d;
+      --line: rgba(255,255,255,.09);
+      --accent: #8b7cff;
+      --accent-2: #50e3c2;
+      --accent-3: #ffca72;
+      --danger: #ff7e87;
+      --shadow: 0 24px 70px rgba(0,0,0,.35);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f7fb;
+      --bg-soft: #edf1f7;
+      --surface: rgba(255,255,255,.82);
+      --surface-solid: #ffffff;
+      --surface-2: #f0f3f8;
+      --text: #111722;
+      --muted: #596579;
+      --muted-2: #7d8899;
+      --line: rgba(17,23,34,.10);
+      --accent: #6758e8;
+      --accent-2: #159c81;
+      --accent-3: #b77916;
+      --danger: #d84d59;
+      --shadow: 0 24px 70px rgba(38,48,70,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(139,124,255,.13), transparent 28rem),
+        radial-gradient(circle at 85% 15%, rgba(80,227,194,.08), transparent 24rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background .45s ease, color .45s ease;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .035;
+      background-image:
+        linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 76%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      position: relative;
+      box-shadow: 0 8px 28px rgba(139,124,255,.28);
+    }
+
+    .brand-mark::after {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: white;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      opacity: .9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .nav-links a {
+      transition: color .2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform .25s ease, background .3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(15deg) scale(1.05);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      align-items: center;
+      padding: 90px 0 110px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-2);
+      border-radius: 50%;
+      box-shadow: 0 0 14px var(--accent-2);
+    }
+
+    h1 {
+      font-size: clamp(3.1rem, 7vw, 6.5rem);
+      line-height: .92;
+      letter-spacing: -.075em;
+      max-width: 850px;
+      margin-bottom: 28px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(120deg, var(--text) 20%, var(--accent) 58%, var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      line-height: 1.8;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 12px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      font-weight: 750;
+      font-size: .92rem;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+    }
+
+    .button.primary {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .button.secondary {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .hero-card {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(145deg, rgba(139,124,255,.13), transparent 45%),
+        var(--surface);
+      border-radius: 30px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      background: var(--accent);
+      filter: blur(100px);
+      opacity: .12;
+      right: -80px;
+      top: -90px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 35px;
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 800;
+    }
+
+    .status {
+      color: var(--accent-2);
+      font-size: .75rem;
+      font-weight: 750;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .question-card {
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+      border-radius: 20px;
+      padding: 23px;
+      margin-bottom: 12px;
+    }
+
+    .question-card strong {
+      display: block;
+      font-size: 1.3rem;
+      line-height: 1.25;
+      margin: 7px 0 11px;
+      letter-spacing: -.025em;
+    }
+
+    .question-card p {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .score {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 14px;
+    }
+
+    .score span {
+      display: block;
+      color: var(--muted-2);
+      font-size: .72rem;
+      margin-bottom: 5px;
+    }
+
+    .score b {
+      font-size: 1rem;
+    }
+
+    section {
+      padding: 105px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 42px;
+    }
+
+    .section-number {
+      color: var(--accent);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+
+    h2 {
+      font-size: clamp(2.1rem, 4vw, 4rem);
+      letter-spacing: -.06em;
+      line-height: 1;
+      margin-bottom: 17px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 650px;
+    }
+
+    .thesis {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 55px 0;
+    }
+
+    .thesis-text {
+      max-width: 1000px;
+      font-size: clamp(1.7rem, 3.4vw, 3.3rem);
+      letter-spacing: -.045em;
+      line-height: 1.14;
+      font-weight: 650;
+    }
+
+    .thesis-text em {
+      color: var(--accent-2);
+      font-style: normal;
+    }
+
+    .framework {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .framework-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 22px;
+      min-height: 190px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .framework-card:hover {
+      transform: translateY(-5px);
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+    }
+
+    .framework-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      color: var(--accent);
+      margin-bottom: 24px;
+      font-weight: 900;
+    }
+
+    .framework-card h3 {
+      font-size: 1rem;
+      margin-bottom: 7px;
+    }
+
+    .framework-card p {
+      color: var(--muted);
+      font-size: .85rem;
+      line-height: 1.55;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .big-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 30px;
+    }
+
+    .big-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+      letter-spacing: -.025em;
+    }
+
+    .big-card p {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .question-list {
+      list-style: none;
+      display: grid;
+      gap: 9px;
+    }
+
+    .question-list li {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .question-list li::before {
+      content: "→";
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+
+    .competition {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+    }
+
+    .competitor {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .competitor-main {
+      border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+      background:
+        radial-gradient(circle at 90% 0%, rgba(139,124,255,.13), transparent 16rem),
+        var(--surface);
+    }
+
+    .competitor-label {
+      color: var(--muted-2);
+      font-size: .73rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .competitor h3 {
+      font-size: 1.65rem;
+      letter-spacing: -.04em;
+      margin-bottom: 10px;
+    }
+
+    .competitor p {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .gap-box {
+      margin-top: 22px;
+      border-left: 2px solid var(--accent-2);
+      padding: 12px 0 12px 16px;
+    }
+
+    .gap-box b {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .gap-box span {
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    .hypotheses {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hypothesis {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 15px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .hyp-number {
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 900;
+    }
+
+    .hypothesis strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .hypothesis span {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .confidence {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 850;
+      white-space: nowrap;
+      background: color-mix(in srgb, var(--accent-3) 12%, transparent);
+      color: var(--accent-3);
+    }
+
+    .confidence.high {
+      background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+      color: var(--accent-2);
+    }
+
+    .confidence.low {
+      background: color-mix(in srgb, var(--danger) 12%, transparent);
+      color: var(--danger);
+    }
+
+    .future {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .future::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .06;
+      filter: blur(100px);
+      left: 45%;
+      top: 10%;
+      pointer-events: none;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 27px;
+      position: relative;
+    }
+
+    .scenario-year {
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      margin-bottom: 17px;
+    }
+
+    .scenario h3 {
+      margin-bottom: 10px;
+    }
+
+    .scenario p {
+      color: var(--muted);
+      font-size: .87rem;
+    }
+
+    .scenario ul {
+      list-style: none;
+      margin-top: 19px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .scenario li {
+      color: var(--muted);
+      font-size: .82rem;
+      padding-left: 15px;
+      position: relative;
+    }
+
+    .scenario li::before {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      left: 0;
+      top: 9px;
+    }
+
+    .validation {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .validation-intro {
+      border-radius: var(--radius);
+      padding: 32px;
+      background:
+        linear-gradient(145deg, rgba(80,227,194,.10), rgba(139,124,255,.08)),
+        var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .validation-intro h3 {
+      font-size: 1.8rem;
+      letter-spacing: -.04em;
+      margin-bottom: 15px;
+    }
+
+    .validation-intro p {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .experiment-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .experiment {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 15px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+    }
+
+    .experiment-num {
+      color: var(--accent-2);
+      font-weight: 900;
+    }
+
+    .experiment strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .experiment span {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .killer {
+      margin-top: 18px;
+      border: 1px solid color-mix(in srgb, var(--accent-3) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent-3) 5%, var(--surface));
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .killer-label {
+      color: var(--accent-3);
+      font-size: .7rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 12px;
+    }
+
+    .killer blockquote {
+      font-size: clamp(1.25rem, 2.4vw, 2rem);
+      line-height: 1.25;
+      letter-spacing: -.035em;
+      font-weight: 650;
+    }
+
+    .final {
+      padding-bottom: 120px;
+    }
+
+    .final-box {
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(139,124,255,.17), transparent 23rem),
+        radial-gradient(circle at 85% 90%, rgba(80,227,194,.10), transparent 22rem),
+        var(--surface);
+      padding: clamp(30px, 6vw, 70px);
+      box-shadow: var(--shadow);
+    }
+
+    .final-box h2 {
+      max-width: 800px;
+    }
+
+    .final-box > p {
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 1.05rem;
+      margin-bottom: 35px;
+    }
+
+    .final-principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .principle {
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface-2) 65%, transparent);
+      padding: 19px;
+      border-radius: 15px;
+    }
+
+    .principle b {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .principle span {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 40px;
+      color: var(--muted-2);
+      font-size: .78rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .competition,
+      .validation {
+        grid-template-columns: 1fr;
+      }
+
+      .framework {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .final-principles {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-inner {
+        height: 64px;
+      }
+
+      h1 {
+        font-size: 3.4rem;
+      }
+
+      section {
+        padding: 75px 0;
+      }
+
+      .framework {
+        grid-template-columns: 1fr;
+      }
+
+      .score-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hypothesis {
+        grid-template-columns: 34px 1fr;
+      }
+
+      .confidence {
+        grid-column: 2;
+        width: fit-content;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand" aria-label="Beyond the Card home">
+        <span class="brand-mark"></span>
+        <span>Beyond the Card</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#problem">Problem</a>
+        <a href="#competition">Competition</a>
+        <a href="#hypotheses">Hypotheses</a>
+        <a href="#future">Future</a>
+        <a href="#validation">Validation</a>
+      </nav>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">☼</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Ireland · 2026 → 2036
+          </div>
+
+          <h1>
+            Don't build<br />
+            <span class="gradient-text">another card.</span>
+          </h1>
+
+          <p class="hero-copy">
+            Build around the financial problem Irish families actually have.
+            The opportunity is not automatically a debit card. It is the gap between
+            <strong>supervised spending</strong> and <strong>real financial independence</strong>.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button primary" href="#problem">Explore the thesis →</a>
+            <a class="button secondary" href="#validation">See what to test</a>
+          </div>
+        </div>
+
+        <div class="hero-card reveal">
+          <div class="card-top">
+            <span class="mini-label">Research lens</span>
+            <span class="status">Hypothesis-led</span>
+          </div>
+
+          <div class="question-card">
+            <span class="mini-label">The central question</span>
+            <strong>Is there a painful, underserved problem worth building a company around?</strong>
+            <p>Before deciding what the product is, establish why the problem matters.</p>
+          </div>
+
+          <div class="score-row">
+            <div class="score">
+              <span>Problem</span>
+              <b>Validate</b>
+            </div>
+            <div class="score">
+              <span>Solution</span>
+              <b>Earn it</b>
+            </div>
+            <div class="score">
+              <span>Moat</span>
+              <b>Prove it</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="thesis">
+      <div class="container">
+        <p class="thesis-text reveal">
+          The strategic shift is simple:
+          <em>Problem → Customer → Gap → Solution → Economics → Future.</em>
+          Not product → features → justification.
+        </p>
+      </div>
+    </div>
+
+    <section id="problem">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">01 — Start with the problem</div>
+          <h2>Find the job before designing the product.</h2>
+          <p>
+            Financial literacy sounds compelling. But “important” is not the same as
+            “painful enough to pay for.” The first task is to identify the real job
+            parents and young people are trying to get done.
+          </p>
+        </div>
+
+        <div class="problem-grid">
+          <article class="big-card reveal">
+            <h3>For parents</h3>
+            <p>They may want children to become independent without giving up safety and visibility.</p>
+            <ul class="question-list">
+              <li>How do I teach money without turning every purchase into a lecture?</li>
+              <li>How much independence is appropriate at each age?</li>
+              <li>How do I know my child is actually learning?</li>
+              <li>Can I reduce supervision as they become more capable?</li>
+            </ul>
+          </article>
+
+          <article class="big-card reveal">
+            <h3>For teenagers</h3>
+            <p>They may want autonomy, convenience and practical experience rather than another lesson.</p>
+            <ul class="question-list">
+              <li>Can I manage my own money without asking every time?</li>
+              <li>Can I understand where my money goes?</li>
+              <li>Can I learn by actually making decisions?</li>
+              <li>Can the product help without feeling like surveillance?</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">02 — The research framework</div>
+          <h2>Seven questions that keep the strategy honest.</h2>
+        </div>
+
+        <div class="framework">
+          <article class="framework-card reveal">
+            <div class="framework-icon">01</div>
+            <h3>Problem</h3>
+            <p>Is the pain real, frequent and important enough to change behaviour?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">02</div>
+            <h3>Customer</h3>
+            <p>Who feels it, uses the solution, decides and ultimately pays?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">03</div>
+            <h3>Alternatives</h3>
+            <p>How are families solving the job today, including doing nothing?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">04</div>
+            <h3>Gap</h3>
+            <p>What important need remains underserved by existing products?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">05</div>
+            <h3>Solution</h3>
+            <p>What is the smallest product capable of solving that specific gap?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">06</div>
+            <h3>Economics</h3>
+            <p>Can acquisition, retention and revenue create a sustainable business?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">07</div>
+            <h3>Future</h3>
+            <p>Will the advantage still matter when the market changes?</p>
+          </article>
+
+          <article class="framework-card reveal">
+            <div class="framework-icon">∞</div>
+            <h3>Defensibility</h3>
+            <p>What remains valuable if an incumbent copies the visible features?</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="competition">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">03 — Competition</div>
+          <h2>Revolut is the benchmark. Not necessarily the problem.</h2>
+          <p>
+            The real competitive question is not “Can we make a better card?”
+            It is “What job does Revolut solve, and what important job does it leave open?”
+          </p>
+        </div>
+
+        <div class="competition">
+          <article class="competitor competitor-main reveal">
+            <div class="competitor-label">Primary benchmark</div>
+            <h3>Revolut &lt;18</h3>
+            <p>
+              A powerful incumbent with brand trust, existing customers, payments,
+              parental controls, spending tools and an established distribution engine.
+            </p>
+
+            <div class="gap-box">
+              <b>The question to test</b>
+              <span>
+                Is there a meaningful educational or behavioural gap that families
+                care enough about to choose a different product?
+              </span>
+            </div>
+          </article>
+
+          <article class="competitor reveal">
+            <div class="competitor-label">Competitive principle</div>
+            <h3>Don't win on features.</h3>
+            <p>
+              If the differentiation is simply “card + savings + lessons + AI +
+              parental controls,” an incumbent can potentially reproduce it.
+            </p>
+
+            <div class="gap-box">
+              <b>Potential strategic territory</b>
+              <span>
+                A measurable journey from supervised spending to confident,
+                independent financial behaviour.
+              </span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="hypotheses">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">04 — Working hypotheses</div>
+          <h2>Don't believe these. Test them.</h2>
+          <p>
+            Confidence reflects how plausible each claim is before validation.
+            High confidence does not mean business viability.
+          </p>
+        </div>
+
+        <div class="hypotheses">
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H01</div>
+            <div>
+              <strong>Parents see financial literacy as important.</strong>
+              <span>Strong environmental evidence; still not proof of willingness to pay.</span>
+            </div>
+            <span class="confidence high">HIGH</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H02</div>
+            <div>
+              <strong>Parents struggle to teach financial skills effectively.</strong>
+              <span>Needs behavioural interviews, not just survey agreement.</span>
+            </div>
+            <span class="confidence">MEDIUM</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H03</div>
+            <div>
+              <strong>Existing products leave a meaningful educational gap.</strong>
+              <span>The critical competitive-gap hypothesis.</span>
+            </div>
+            <span class="confidence">MEDIUM</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H04</div>
+            <div>
+              <strong>13–17 is the strongest initial segment.</strong>
+              <span>Potentially attractive, but needs evidence on needs and willingness to adopt.</span>
+            </div>
+            <span class="confidence low">LOW–MED</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H05</div>
+            <div>
+              <strong>Connecting education to real money improves learning.</strong>
+              <span>Interesting behavioural hypothesis that requires controlled testing.</span>
+            </div>
+            <span class="confidence">MEDIUM</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H06</div>
+            <div>
+              <strong>Parents are the buyer while children are the main users.</strong>
+              <span>Likely structure, but both sides influence adoption.</span>
+            </div>
+            <span class="confidence high">HIGH</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H07</div>
+            <div>
+              <strong>Parents will pay for measurable financial outcomes.</strong>
+              <span>Much weaker than “parents value financial education.”</span>
+            </div>
+            <span class="confidence low">LOW–MED</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H08</div>
+            <div>
+              <strong>AI can meaningfully personalise financial education.</strong>
+              <span>Technically plausible; educational impact and safety remain open.</span>
+            </div>
+            <span class="confidence">MED–HIGH</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H09</div>
+            <div>
+              <strong>A regulated infrastructure partner is preferable to building everything.</strong>
+              <span>Potentially practical, subject to partner availability and economics.</span>
+            </div>
+            <span class="confidence">MED–HIGH</span>
+          </div>
+
+          <div class="hypothesis reveal">
+            <div class="hyp-number">H10</div>
+            <div>
+              <strong>A defensible moat can be built beyond the card.</strong>
+              <span>The hardest strategic claim — and the one investors should challenge.</span>
+            </div>
+            <span class="confidence low">LOW</span>
+          </div>
+        </div>
+
+        <div class="killer reveal">
+          <div class="killer-label">The dangerous assumption</div>
+          <blockquote>
+            “Parents will choose us because we combine a kids’ debit card with financial literacy.”
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section id="future" class="future">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">05 — 2031 → 2036</div>
+          <h2>What survives when today's features become commodities?</h2>
+          <p>
+            A card is likely to become less distinctive. The strategic advantage
+            must come from something harder to copy than payment infrastructure.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="scenario reveal">
+            <div class="scenario-year">SCENARIO A · UPSIDE</div>
+            <h3>Financial independence becomes a product category.</h3>
+            <p>
+              Families increasingly value tools that actively develop financial
+              capability, not just tools that enable spending.
+            </p>
+            <ul>
+              <li>Measured behaviour change</li>
+              <li>Strong parent trust</li>
+              <li>School / financial-institution partnerships</li>
+              <li>AI makes learning deeply personalised</li>
+            </ul>
+          </article>
+
+          <article class="scenario reveal">
+            <div class="scenario-year">SCENARIO B · BASE</div>
+            <h3>Incumbents absorb the obvious features.</h3>
+            <p>
+              Revolut and banks continue improving education, savings and AI.
+              A focused niche or partnership model becomes necessary.
+            </p>
+            <ul>
+              <li>Education remains valuable</li>
+              <li>Willingness to pay is constrained</li>
+              <li>Distribution becomes critical</li>
+              <li>Partnerships outperform pure D2C</li>
+            </ul>
+          </article>
+
+          <article class="scenario reveal">
+            <div class="scenario-year">SCENARIO C · DOWNSIDE</div>
+            <h3>The card becomes a commodity.</h3>
+            <p>
+              Acquisition is expensive, retention is weak and incumbents copy the
+              educational experience faster than a startup can differentiate.
+            </p>
+            <ul>
+              <li>Low subscription conversion</li>
+              <li>High regulatory burden</li>
+              <li>Weak behavioural impact</li>
+              <li>No defensible moat</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="validation">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-number">06 — Validation</div>
+          <h2>Prove the problem before building the infrastructure.</h2>
+          <p>
+            The smartest first product may not contain a card at all.
+            Test the highest-risk assumptions before spending heavily on regulated infrastructure.
+          </p>
+        </div>
+
+        <div class="validation">
+          <article class="validation-intro reveal">
+            <h3>The validation rule</h3>
+            <p>
+              Prioritise experiments by <strong>importance × uncertainty × cost of testing</strong>.
+              Start with the claims that could kill the business.
+            </p>
+
+            <div class="gap-box">
+              <b>Minimum viable question</b>
+              <span>
+                Will families repeatedly use a product that helps teenagers make
+                better financial decisions — and will someone pay for the outcome?
+              </span>
+            </div>
+          </article>
+
+          <div class="experiment-list">
+            <article class="experiment reveal">
+              <div class="experiment-num">01</div>
+              <div>
+                <strong>Parent problem interviews</strong>
+                <span>Ask about recent real money conversations, not abstract opinions.</span>
+              </div>
+            </article>
+
+            <article class="experiment reveal">
+              <div class="experiment-num">02</div>
+              <div>
+                <strong>Revolut switching test</strong>
+                <span>Ask existing users what would genuinely make them switch.</span>
+              </div>
+            </article>
+
+            <article class="experiment reveal">
+              <div class="experiment-num">03</div>
+              <div>
+                <strong>No-card prototype</strong>
+                <span>Test the educational / behavioural proposition without payment infrastructure.</span>
+              </div>
+            </article>
+
+            <article class="experiment reveal">
+              <div class="experiment-num">04</div>
+              <div>
+                <strong>Behaviour experiment</strong>
+                <span>Measure whether users actually save, budget or make better decisions.</span>
+              </div>
+            </article>
+
+            <article class="experiment reveal">
+              <div class="experiment-num">05</div>
+              <div>
+                <strong>Willingness-to-pay test</strong>
+                <span>Test real payment intent instead of relying on “I would use this.”</span>
+              </div>
+            </article>
+
+            <article class="experiment reveal">
+              <div class="experiment-num">06</div>
+              <div>
+                <strong>Distribution experiment</strong>
+                <span>Compare direct-to-parent acquisition with schools, credit unions and partners.</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="container">
+        <div class="final-box reveal">
+          <div class="section-number">07 — Strategic conclusion</div>
+          <h2>Build the capability, not the card.</h2>
+
+          <p>
+            The strongest version of the opportunity is not “Revolut for kids, but with lessons.”
+            It is a system that helps young people move from <strong>supervised money</strong>
+            to <strong>confident financial independence</strong>, while giving parents a reason
+            to trust the transition.
+          </p>
+
+          <div class="final-principles">
+            <div class="principle">
+              <b>Start with the gap</b>
+              <span>Prove an important unmet need exists before choosing the product.</span>
+            </div>
+
+            <div class="principle">
+              <b>Measure behaviour</b>
+              <span>Don't confuse engagement or completed lessons with financial improvement.</span>
+            </div>
+
+            <div class="principle">
+              <b>Earn the card</b>
+              <span>Add payment infrastructure when evidence shows it materially increases value.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Beyond the Card · Ireland</span>
+      <span>Problem → Customer → Gap → Solution → Economics → Future</span>
+    </div>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    const savedTheme = localStorage.getItem("theme");
+    const preferredLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+    function setTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+      icon.textContent = theme === "light" ? "☾" : "☼";
+      toggle.setAttribute(
+        "aria-label",
+        theme === "light" ? "Switch to dark theme" : "Switch to light theme"
+      );
+    }
+
+    setTheme(savedTheme || (preferredLight ? "light" : "dark"));
+
+    toggle.addEventListener("click", () => {
+      const current = root.getAttribute("data-theme");
+      setTheme(current === "dark" ? "light" : "dark");
+    });
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", event => {
+        const target = document.querySelector(anchor.getAttribute("href"));
+        if (!target) return;
+
+        event.preventDefault();
+
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    });
+  </script>
+</body>
+</html>
